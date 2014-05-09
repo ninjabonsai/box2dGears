@@ -1,6 +1,8 @@
 require('gsap');
 var loadRube = require('./loadrube');
 var Box2D = require("box2dweb");
+var gearsScene = require('./gears');
+//var gearsScene = require('./box');
 
 'use strict';
 
@@ -17,7 +19,9 @@ var w = window.innerWidth,
     h = window.innerHeight,
     SCALE = 200, // pixels per metre
     world,
-    debugOn = false;
+    debugOn = true;
+
+var ctx;
 
 window.requestAnimFrame = (function () {
     return  window.requestAnimationFrame ||
@@ -31,6 +35,8 @@ window.requestAnimFrame = (function () {
 init();
 
 function init() {
+    console.log('init');
+
     world = new b2Dynamics.b2World(new b2Math.b2Vec2(0, 10), true);
 
     // add debug canvas if necessary
@@ -38,23 +44,12 @@ function init() {
         addDebugCanvas();
     }
 
-    createWallsAndFloor();
+    loadRube.loadSceneIntoWorld(gearsScene, world);
 
-    // create display obejct
-    var div = document.createElement('div');
-    div.style.width = '40px';
-    div.style.height = '40px';
-    div.style.marginTop = '-20px';
-    div.style.marginLeft = '-20px';
-
-    document.body.appendChild(div);
-
-    // create body
-    var boxBody = createBox(40);
-    boxBody.SetUserData(div);
-
-    // div needs a reference to body for adding mouse joint
-    div.body = boxBody;
+    //    createWallsAndFloor();
+    //
+    //    // create body
+    //    var boxBody = createBox(40);
 
     // start rendering
     tick();
@@ -137,6 +132,11 @@ function addDebugCanvas() {
     debugDraw.SetDrawScale(SCALE);
     debugDraw.SetFlags(b2Dynamics.b2DebugDraw.e_shapeBit | b2Dynamics.b2DebugDraw.e_jointBit);
 
+    ctx = debugCanvas.getContext('2d');
+
+    ctx.scale(1, -1);
+//    ctx.translate(0, h);
+
     world.SetDebugDraw(debugDraw);
 }
 
@@ -144,28 +144,29 @@ function tick() {
     world.Step(1 / 60, 8, 2);
     world.ClearForces();
 
-    var div;
+    //    var div;
 
     for (var body = world.GetBodyList(); body; body = body.GetNext()) {
         if (body.GetType() == b2Dynamics.b2Body.b2_dynamicBody) {
-            div = body.GetUserData();
-
-            // set position
-            div.style.left = body.GetPosition().x * SCALE + 'px';
-            div.style.top = body.GetPosition().y * SCALE + 'px';
-
-            // set rotation
-            div.style.webkitTransform =
-                div.style.mozTransform =
-                    div.style.oTransform =
-                        div.style.msTransform =
-                            div.style.transform =
-                                'rotate(' + body.GetAngle() + 'rad)';
+            //            div = body.GetUserData();
+            //
+            //            // set position
+            //            div.style.left = body.GetPosition().x * SCALE + 'px';
+            //            div.style.top = body.GetPosition().y * SCALE + 'px';
+            //
+            //            // set rotation
+            //            div.style.webkitTransform =
+            //                div.style.mozTransform =
+            //                    div.style.oTransform =
+            //                        div.style.msTransform =
+            //                            div.style.transform =
+            //                                'rotate(' + body.GetAngle() + 'rad)';
         }
     }
 
     // draw debug data if using debug canvas
     if (debugOn) {
+        ctx.clearRect(0, -h, w, h);
         world.DrawDebugData();
     }
 
