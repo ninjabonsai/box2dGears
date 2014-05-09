@@ -1,0 +1,20 @@
+{
+  "name": "box2dGearsTest",
+  "version": "0.0.0",
+  "authors": [
+    "richard.rogers <r.rogers@diamonddogs.cc>"
+  ],
+  "main": "webroot/scripts/main.js",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "gsap": "~1.11.7"
+  }
+}

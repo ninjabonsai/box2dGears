@@ -1,0 +1,21 @@
+{
+  "name": "box2dGearsTest",
+  "version": "0.0.0",
+  "description": "",
+  "main": "webroot/scripts/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "richard rogers",
+  "license": "ISC",
+  "devDependencies": {
+    "grunt-contrib-sass": "^0.7.3",
+    "grunt-autoprefixer": "^0.7.3",
+    "grunt-browserify": "^2.0.8",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-browserify-bower": "^0.1.4"
+  },
+  "dependencies": {
+    "box2dweb": "^2.1.0-b"
+  }
+}
