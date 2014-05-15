@@ -1481,7 +1481,7 @@ module.exports =
                 "jointSpeed" : 0,
                 "lowerLimit" : 0,
                 "maxMotorTorque" : 100.0,
-                "motorSpeed" : -1.570796370506287,
+                "motorSpeed" : 4.570796370506287,
                 "name" : "smallGearJoint",
                 "refAngle" : 0,
                 "type" : "revolute",

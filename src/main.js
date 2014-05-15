@@ -1,10 +1,12 @@
 require('gsap');
+
 var loadRube = require('./loadrube');
 var Box2D = require("box2dweb");
 var gearsScene = require('./gears');
-//var gearsScene = require('./box');
 
 'use strict';
+
+var PREFIXES = ['webkit', 'moz', 'ms', 'o', ''];
 
 var b2Common = Box2D.Common,
     b2Math = Box2D.Common.Math,
@@ -15,11 +17,14 @@ var b2Common = Box2D.Common,
     b2Controllers = Box2D.Dynamics.Controllers,
     b2Joints = Box2D.Dynamics.Joints;
 
-var w = window.innerWidth,
-    h = window.innerHeight,
+var w = 1024,
+    h = 768,
     SCALE = 200, // pixels per metre
     world,
     debugOn = true;
+
+var gearLarge,
+    gearSmall;
 
 var ctx;
 
@@ -38,6 +43,12 @@ function init() {
     console.log('init');
 
     world = new b2Dynamics.b2World(new b2Math.b2Vec2(0, 10), true);
+
+    gearLarge = document.getElementById('gear-large');
+    gearSmall = document.getElementById('gear-small');
+
+    gearsScene.body[3].userData = gearLarge;
+    gearsScene.body[2].userData = gearSmall;
 
     // add debug canvas if necessary
     if (debugOn) {
@@ -134,39 +145,60 @@ function addDebugCanvas() {
 
     ctx = debugCanvas.getContext('2d');
 
-    ctx.scale(1, -1);
-//    ctx.translate(0, h);
-
     world.SetDebugDraw(debugDraw);
 }
 
+function setStylePrefixed(el, prop, val, prefixProp, prefixVal) {
+    var prefixedProp = prop,
+        prefixedVal = val;
+
+    if (!prefixProp && !prefixVal) {
+        el.style[prop] = val;
+    } else {
+        for (var i = 0; i < PREFIXES.length; i++) {
+            if (prefixVal) {
+                prefixedVal = '-' + PREFIXES[i] + '-' + val;
+            }
+
+            if (prefixProp) {
+                if (PREFIXES[i] !== '') {
+                    prefixedProp = PREFIXES[i] + prop.charAt(0).toUpperCase() + prop.slice(1);
+                } else {
+                    prefixedProp = prop;
+                }
+            }
+
+            el.style[prefixedProp] = prefixedVal;
+        }
+    }
+}
+
 function tick() {
-    world.Step(1 / 60, 8, 2);
+    world.Step(1 / 60, 8, 3);
     world.ClearForces();
 
-    //    var div;
+    var div;
 
     for (var body = world.GetBodyList(); body; body = body.GetNext()) {
         if (body.GetType() == b2Dynamics.b2Body.b2_dynamicBody) {
-            //            div = body.GetUserData();
-            //
-            //            // set position
-            //            div.style.left = body.GetPosition().x * SCALE + 'px';
-            //            div.style.top = body.GetPosition().y * SCALE + 'px';
-            //
-            //            // set rotation
-            //            div.style.webkitTransform =
-            //                div.style.mozTransform =
-            //                    div.style.oTransform =
-            //                        div.style.msTransform =
-            //                            div.style.transform =
-            //                                'rotate(' + body.GetAngle() + 'rad)';
+            div = body.GetUserData();
+
+            // set position
+            div.style.left = body.GetPosition().x * SCALE + 'px';
+            div.style.top = body.GetPosition().y * SCALE + 'px';
+
+            // set rotation
+            div.style.webkitTransform =
+                div.style.mozTransform =
+                    div.style.oTransform =
+                        div.style.msTransform =
+                            div.style.transform =
+                                'rotate(' + body.GetAngle() + 'rad)';
         }
     }
 
     // draw debug data if using debug canvas
     if (debugOn) {
-        ctx.clearRect(0, -h, w, h);
         world.DrawDebugData();
     }
 

@@ -137,7 +137,12 @@ function loadBodyFromRUBE(bodyJso, world) {
         bd.linearVelocity.SetV(bodyJso.linearVelocity);
     }
     if (bodyJso.hasOwnProperty('position') && bodyJso.position instanceof Object) {
+        // convert yaxis from rube to box2dweb
+        bodyJso.position.y *= -1;
         bd.position.SetV(bodyJso.position);
+    }
+    if (bodyJso.hasOwnProperty('userData')) {
+        bd.userData = bodyJso.userData;
     }
     if (bodyJso.hasOwnProperty('awake')) {
         bd.awake = bodyJso.awake;
