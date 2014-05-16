@@ -491,7 +491,7 @@ LoadRube.prototype.loadSceneIntoWorld = function(worldJso, world) {
         world.images = loadedImages;
     }
 
-    return success;
+    return {success: success, loadedBodies: loadedBodies, loadedJoints: loadedJoints};
 }
 
 //create a world variable and return it if loading succeeds

@@ -1,16 +1,15 @@
 body {
     margin: 0;
 
-    div {
+    .gear {
         position: absolute;
         transform-origin: 0 0;
-        display: none;
 
-        &#gear-large img {
+        &.gear-large img {
             transform: translate3d(-174px, -176px, 0);
         }
 
-        &#gear-small img {
+        &.gear-small img {
             transform: translate3d(-100px, -100px, 0);
         }
     }

@@ -1,16 +1,15 @@
 body {
   margin: 0; }
-  body div {
+  body .gear {
     position: absolute;
     -webkit-transform-origin: 0 0;
     -ms-transform-origin: 0 0;
-    transform-origin: 0 0;
-    display: none; }
-    body div#gear-large img {
+    transform-origin: 0 0; }
+    body .gear.gear-large img {
       -webkit-transform: translate3d(-174px, -176px, 0);
       -ms-transform: translate3d(-174px, -176px, 0);
       transform: translate3d(-174px, -176px, 0); }
-    body div#gear-small img {
+    body .gear.gear-small img {
       -webkit-transform: translate3d(-100px, -100px, 0);
       -ms-transform: translate3d(-100px, -100px, 0);
       transform: translate3d(-100px, -100px, 0); }

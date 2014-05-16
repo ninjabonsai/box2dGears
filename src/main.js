@@ -21,10 +21,11 @@ var w = 1024,
     h = 768,
     SCALE = 200, // pixels per metre
     world,
-    debugOn = true;
+    debugOn = false;
 
-var gearLarge,
-    gearSmall;
+var gearDivs = [],
+    gearsObj,
+    motorJoint;
 
 var ctx;
 
@@ -44,18 +45,40 @@ function init() {
 
     world = new b2Dynamics.b2World(new b2Math.b2Vec2(0, 10), true);
 
-    gearLarge = document.getElementById('gear-large');
-    gearSmall = document.getElementById('gear-small');
+    gearDivs = document.querySelectorAll('.gear');
 
-    gearsScene.body[3].userData = gearLarge;
-    gearsScene.body[2].userData = gearSmall;
+    gearsScene.body[1].userData = gearDivs[0];
+    gearsScene.body[2].userData = gearDivs[1];
+    gearsScene.body[6].userData = gearDivs[2];
+    gearsScene.body[7].userData = gearDivs[3];
 
     // add debug canvas if necessary
     if (debugOn) {
         addDebugCanvas();
     }
 
-    loadRube.loadSceneIntoWorld(gearsScene, world);
+    gearsObj = loadRube.loadSceneIntoWorld(gearsScene, world);
+
+    // find motored joint
+    console.log('total joints ' + gearsObj.loadedJoints.length);
+
+    for (var i = 0; i < gearsObj.loadedJoints.length; i++) {
+        var joint = gearsObj.loadedJoints[i];
+
+        if (joint.name === 'smallGear2Joint') {
+
+            motorJoint = joint;
+
+            break;
+        }
+
+    }
+
+    // slider
+    var slider = document.getElementById('gear-speed');
+    slider.addEventListener('input', function (e) {
+        motorJoint.SetMotorSpeed(this.value);
+    });
 
     //    createWallsAndFloor();
     //
